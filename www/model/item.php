@@ -3,7 +3,6 @@ require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
 // DB利用
-// item_id = {$item_id}の意味合い
 function get_item($db, $item_id){
   $sql = "
     SELECT
@@ -23,6 +22,7 @@ function get_item($db, $item_id){
 }
 
 // $sql .=のドットの意味がわからない
+// $is_openはどこから来たのか？
 function get_items($db, $is_open = false){
   $sql = '
     SELECT

@@ -108,8 +108,8 @@ function delete_image($filename){
 }
 
 
-// $stringはどこから来た？
 function is_valid_length($string, $minimum_length, $maximum_length = PHP_INT_MAX){
+  // 関数内の変数string
   $length = mb_strlen($string);
   return ($minimum_length <= $length) && ($length <= $maximum_length);
 }
