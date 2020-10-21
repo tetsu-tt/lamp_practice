@@ -38,7 +38,7 @@ function get_user_by_name($db, $name){
   return fetch_query($db, $sql);
 }
 
-// $user === falseとは？
+// get_user_by_name()で$userを取得できなかった場合falseを返す
 function login_as($db, $name, $password){
   $user = get_user_by_name($db, $name);
   if($user === false || $user['password'] !== $password){
@@ -76,7 +76,7 @@ function is_valid_user($name, $password, $password_confirmation){
 }
 
 function is_valid_user_name($name) {
-  //  $is_valid = trueの位置？
+  //  $is_valid = trueとして、is_valid_length()がfalseになった場合、$is_valid = falseに返す
   $is_valid = true;
   if(is_valid_length($name, USER_NAME_LENGTH_MIN, USER_NAME_LENGTH_MAX) === false){
     set_error('ユーザー名は'. USER_NAME_LENGTH_MIN . '文字以上、' . USER_NAME_LENGTH_MAX . '文字以内にしてください。');
@@ -107,6 +107,7 @@ function is_valid_password($password, $password_confirmation){
 }
 
 function insert_user($db, $name, $password){
+  // ""内の{}によって、変数の範囲を指定できている(例：範囲を指定しないと、$nameは$namなのか$naなのか変数がわからない)
   $sql = "
     INSERT INTO
       users(name, password)

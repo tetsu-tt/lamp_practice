@@ -15,7 +15,7 @@ $password_confirmation = get_post('password_confirmation');
 
 $db = get_db_connect();
 
-// 下記のコードの文法がわからない
+
 try{
   $result = regist_user($db, $name, $password, $password_confirmation);
   // $regist_userでsqlの発行に成功すればtrue失敗すればfalseを返す
