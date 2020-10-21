@@ -1,5 +1,6 @@
 <?php
 
+// わからないコード
 function dd($var){
   var_dump($var);
   exit();
@@ -24,6 +25,7 @@ function get_post($name){
   return '';
 }
 
+// ファイルの名前を取得する
 function get_file($name){
   if(isset($_FILES[$name]) === true){
     return $_FILES[$name];
@@ -31,6 +33,7 @@ function get_file($name){
   return array();
 }
 
+// ユーザーidが正しければ、ユーザーidを出力
 function get_session($name){
   if(isset($_SESSION[$name]) === true){
     return $_SESSION[$name];
@@ -72,6 +75,8 @@ function get_messages(){
   return $messages;
 }
 
+// ユーザーidが正しいかチェック
+//理解が曖昧
 function is_logined(){
   return get_session('user_id') !== '';
 }
@@ -103,7 +108,7 @@ function delete_image($filename){
 }
 
 
-
+// $stringはどこから来た？
 function is_valid_length($string, $minimum_length, $maximum_length = PHP_INT_MAX){
   $length = mb_strlen($string);
   return ($minimum_length <= $length) && ($length <= $maximum_length);
@@ -114,6 +119,7 @@ function is_alphanumeric($string){
 }
 
 function is_positive_integer($string){
+  // 関数内の変数$string
   return is_valid_format($string, REGEXP_POSITIVE_INTEGER);
 }
 
@@ -135,6 +141,7 @@ function is_valid_upload_image($image){
   return true;
 }
 
+// 教科書の課題で実施したもの
 function h($str){
   return htmlspecialchars($str,ENT_QUOTES,'UTF-8');
 }

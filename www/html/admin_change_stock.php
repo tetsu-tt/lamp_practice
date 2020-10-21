@@ -27,4 +27,5 @@ if(update_item_stock($db, $item_id, $stock)){
   set_error('在庫数の変更に失敗しました。');
 }
 
+// 最後のコードの配置について
 redirect_to(ADMIN_URL);

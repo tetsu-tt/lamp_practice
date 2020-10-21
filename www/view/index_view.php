@@ -25,6 +25,7 @@
             <figure class="card-body">
               <img class="card-img" src="<?php print(IMAGE_PATH . $item['image']); ?>">
               <figcaption>
+              <!-- figcaptionは図表のキャプションを示す -->
                 <?php print(number_format($item['price'])); ?>円
                 <?php if($item['stock'] > 0){ ?>
                   <form action="index_add_cart.php" method="post">

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<!-- include_onceとの違いは？ -->
   <?php include VIEW_PATH . 'templates/head.php'; ?>
   <title>商品管理</title>
   <link rel="stylesheet" href="<?php print(STYLESHEET_PATH . 'admin.css'); ?>">
@@ -61,9 +62,10 @@
         </thead>
         <tbody>
           <?php foreach($items as $item){ ?>
+          <!-- class="<?php print(is_open($item) ? '' : 'close_item'); ?>"とは？ -->
           <tr class="<?php print(is_open($item) ? '' : 'close_item'); ?>">
             <td><img src="<?php print(IMAGE_PATH . $item['image']);?>" class="item_image"></td>
-            <td><?php print($item['name']); ?></td>
+            <td><?php print htmlspecialchars(($item['name']), ENT_QUOTES, 'UTF-8'); ?></td>
             <td><?php print(number_format($item['price'])); ?>円</td>
             <td>
               <form method="post" action="admin_change_stock.php">
@@ -103,7 +105,9 @@
       <p>商品はありません。</p>
     <?php } ?> 
   </div>
+  <!-- scriptの文の意味 -->
   <script>
+  // jqueryのメタ言語を使っている
     $('.delete').on('click', () => confirm('本当に削除しますか？'))
   </script>
 </body>

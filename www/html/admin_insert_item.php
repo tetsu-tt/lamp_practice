@@ -10,6 +10,7 @@ if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
 
+// get_db_connect()を定義しているdb.phpがrequire_onceで読み込まれていない。
 $db = get_db_connect();
 
 $user = get_login_user($db);

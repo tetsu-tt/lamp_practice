@@ -1,5 +1,7 @@
 <?php
 
+// $db $sqlの値を示すコードが見当たらない
+
 function get_db_connect(){
   // MySQL用のDSN文字列
   $dsn = 'mysql:dbname='. DB_NAME .';host='. DB_HOST .';charset='.DB_CHARSET;
@@ -16,6 +18,7 @@ function get_db_connect(){
   return $dbh;
 }
 
+// 関数の意味合いがわからない
 function fetch_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -38,6 +41,8 @@ function fetch_all_query($db, $sql, $params = array()){
   return false;
 }
 
+// queryを実行する
+// queryとは?
 function execute_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);

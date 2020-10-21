@@ -19,6 +19,8 @@ function get_user($db, $user_id){
   return fetch_query($db, $sql);
 }
 
+// '{$name}'とは？LIMIT 1とは？
+// nameを使用して情報を得る
 function get_user_by_name($db, $name){
   $sql = "
     SELECT
@@ -36,6 +38,7 @@ function get_user_by_name($db, $name){
   return fetch_query($db, $sql);
 }
 
+// $user === falseとは？
 function login_as($db, $name, $password){
   $user = get_user_by_name($db, $name);
   if($user === false || $user['password'] !== $password){
@@ -45,6 +48,7 @@ function login_as($db, $name, $password){
   return $user;
 }
 
+// ユーザー情報を取得する
 function get_login_user($db){
   $login_user_id = get_session('user_id');
 
@@ -59,6 +63,7 @@ function regist_user($db, $name, $password, $password_confirmation) {
   return insert_user($db, $name, $password);
 }
 
+// 管理者名が正しければ？？を出力
 function is_admin($user){
   return $user['type'] === USER_TYPE_ADMIN;
 }
@@ -71,6 +76,7 @@ function is_valid_user($name, $password, $password_confirmation){
 }
 
 function is_valid_user_name($name) {
+  //  $is_valid = trueの位置？
   $is_valid = true;
   if(is_valid_length($name, USER_NAME_LENGTH_MIN, USER_NAME_LENGTH_MAX) === false){
     set_error('ユーザー名は'. USER_NAME_LENGTH_MIN . '文字以上、' . USER_NAME_LENGTH_MAX . '文字以内にしてください。');

@@ -12,8 +12,10 @@
 
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
+    <!-- $cartsどこで出てきたのか？ -->
     <?php if(count($carts) > 0){ ?>
       <table class="table table-bordered">
+      <!-- <thead>で、テーブル（表）のヘッダ部分を定義することができる -->
         <thead class="thead-light">
           <tr>
             <th>商品画像</th>

@@ -3,7 +3,7 @@ require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
 // DB利用
-
+// item_id = {$item_id}の意味合い
 function get_item($db, $item_id){
   $sql = "
     SELECT
@@ -22,6 +22,7 @@ function get_item($db, $item_id){
   return fetch_query($db, $sql);
 }
 
+// $sql .=のドットの意味がわからない
 function get_items($db, $is_open = false){
   $sql = '
     SELECT
@@ -47,10 +48,12 @@ function get_all_items($db){
   return get_items($db);
 }
 
+// ステータスが”公開”の商品を取得する
 function get_open_items($db){
   return get_items($db, true);
 }
 
+// 商品を登録する
 function regist_item($db, $name, $price, $stock, $status, $image){
   $filename = get_upload_filename($image);
   if(validate_item($name, $price, $stock, $filename, $status) === false){
@@ -59,6 +62,7 @@ function regist_item($db, $name, $price, $stock, $status, $image){
   return regist_item_transaction($db, $name, $price, $stock, $status, $image, $filename);
 }
 
+// 登録した商品全てをトランザクションする。
 function regist_item_transaction($db, $name, $price, $stock, $status, $image, $filename){
   $db->beginTransaction();
   if(insert_item($db, $name, $price, $stock, $filename, $status) 
@@ -71,6 +75,7 @@ function regist_item_transaction($db, $name, $price, $stock, $status, $image, $f
   
 }
 
+// 商品をデータベースに送る
 function insert_item($db, $name, $price, $stock, $filename, $status){
   $status_value = PERMITTED_ITEM_STATUSES[$status];
   $sql = "
@@ -88,6 +93,7 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
   return execute_query($db, $sql);
 }
 
+// データベースのstatusを変更する
 function update_item_status($db, $item_id, $status){
   $sql = "
     UPDATE
@@ -102,6 +108,8 @@ function update_item_status($db, $item_id, $status){
   return execute_query($db, $sql);
 }
 
+// データベースのstockを変更する
+// LIMITとは？
 function update_item_stock($db, $item_id, $stock){
   $sql = "
     UPDATE
@@ -116,6 +124,7 @@ function update_item_stock($db, $item_id, $stock){
   return execute_query($db, $sql);
 }
 
+// 商品をデータベースから削除する
 function destroy_item($db, $item_id){
   $item = get_item($db, $item_id);
   if($item === false){
@@ -131,6 +140,8 @@ function destroy_item($db, $item_id){
   return false;
 }
 
+// 商品をデータベースから削除する destroy_item()との使い分けは？
+// Deleteのqueryを直接実行している
 function delete_item($db, $item_id){
   $sql = "
     DELETE FROM
@@ -146,10 +157,12 @@ function delete_item($db, $item_id){
 
 // 非DB
 
+// statusが公開（＝１）の商品を表示する
 function is_open($item){
   return $item['status'] === 1;
 }
 
+// 下記以降の関数はまだ確認していない
 function validate_item($name, $price, $stock, $filename, $status){
   $is_valid_item_name = is_valid_item_name($name);
   $is_valid_item_price = is_valid_item_price($price);
