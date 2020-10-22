@@ -21,8 +21,11 @@ function get_item($db, $item_id){
   return fetch_query($db, $sql);
 }
 
-// $sql .=のドットの意味がわからない
-// $is_openはどこから来たのか？
+
+// $is_openは関数内での引数
+// $is_open = falseの場合は、公開も非公開商品も表示させる(admin.phpとか)
+// $is_open = trueの場合は、公開商品だけを表示させる(index.phpとか)
+// $is_open =  falseが省略可能な引数にあたる（get_items($db)のときはget_items($db, false)と同じことになる
 function get_items($db, $is_open = false){
   $sql = '
     SELECT
@@ -87,10 +90,10 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
         image,
         status
       )
-    VALUES('{$name}', {$price}, {$stock}, '{$filename}', {$status_value});
+    VALUES(?, ?, ?, ?, ?);
   ";
 
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, [$name, $price, $stock, $filename, $status_value]);
 }
 
 // データベースのstatusを変更する
@@ -99,29 +102,28 @@ function update_item_status($db, $item_id, $status){
     UPDATE
       items
     SET
-      status = {$status}
+      status = ?
     WHERE
-      item_id = {$item_id}
+      item_id = ?
     LIMIT 1
   ";
   
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, [$status, $item_id]);
 }
 
 // データベースのstockを変更する
-// LIMITとは？
 function update_item_stock($db, $item_id, $stock){
   $sql = "
     UPDATE
       items
     SET
-      stock = {$stock}
+      stock = ?
     WHERE
-      item_id = {$item_id}
+      item_id = ?
     LIMIT 1
   ";
   
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, [$stock, $item_id]);
 }
 
 // 商品をデータベースから削除する
@@ -147,11 +149,11 @@ function delete_item($db, $item_id){
     DELETE FROM
       items
     WHERE
-      item_id = {$item_id}
+      item_id = ?
     LIMIT 1
   ";
   
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, [$item_id]);
 }
 
 
