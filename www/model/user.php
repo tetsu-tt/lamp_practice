@@ -12,14 +12,14 @@ function get_user($db, $user_id){
     FROM
       users
     WHERE
-      user_id = {$user_id}
+      user_id = ?
     LIMIT 1
   ";
 
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql, [$user_id]);
 }
 
-// '{$name}'とは？LIMIT 1とは？
+
 // nameを使用して情報を得る
 function get_user_by_name($db, $name){
   $sql = "
@@ -31,11 +31,11 @@ function get_user_by_name($db, $name){
     FROM
       users
     WHERE
-      name = '{$name}'
+      name = ?
     LIMIT 1
   ";
 
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql, [$name]);
 }
 
 // get_user_by_name()で$userを取得できなかった場合falseを返す
@@ -111,9 +111,9 @@ function insert_user($db, $name, $password){
   $sql = "
     INSERT INTO
       users(name, password)
-    VALUES ('{$name}', '{$password}');
+    VALUES (?, ?);
   ";
 
-  return execute_query($db, $sql);
+  return execute_query($db, $sql, [$name, $password]);
 }
 

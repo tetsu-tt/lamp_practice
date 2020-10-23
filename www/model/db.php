@@ -18,7 +18,7 @@ function get_db_connect(){
   return $dbh;
 }
 
-// 関数の意味合いがわからない
+
 function fetch_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -42,7 +42,6 @@ function fetch_all_query($db, $sql, $params = array()){
 }
 
 // queryを実行する
-// queryとは?
 function execute_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -52,3 +51,4 @@ function execute_query($db, $sql, $params = array()){
   }
   return false;
 }
+
