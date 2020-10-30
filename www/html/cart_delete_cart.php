@@ -7,6 +7,8 @@ require_once MODEL_PATH . 'cart.php';
 
 session_start();
 
+$token = $_POST['csrf_token'];
+
 if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
@@ -16,10 +18,13 @@ $user = get_login_user($db);
 
 $cart_id = get_post('cart_id');
 
+// 10/30更新
+if (is_valid_csrf_token($token) !== false){
 if(delete_cart($db, $cart_id)){
   set_message('カートを削除しました。');
 } else {
   set_error('カートの削除に失敗しました。');
+}
 }
 
 redirect_to(CART_URL);

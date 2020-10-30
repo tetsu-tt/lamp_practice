@@ -6,6 +6,8 @@ require_once MODEL_PATH . 'item.php';
 
 session_start();
 
+$token = $_POST['csrf_token'];
+
 if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
@@ -21,6 +23,8 @@ if(is_admin($user) === false){
 $item_id = get_post('item_id');
 $changes_to = get_post('changes_to');
 
+// 10/30更新
+if (is_valid_csrf_token($token) !== false){
 if($changes_to === 'open'){
   update_item_status($db, $item_id, ITEM_STATUS_OPEN);
   set_message('ステータスを変更しました。');
@@ -29,6 +33,7 @@ if($changes_to === 'open'){
   set_message('ステータスを変更しました。');
 }else {
   set_error('不正なリクエストです。');
+}
 }
 
 
