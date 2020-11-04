@@ -7,6 +7,8 @@ require_once MODEL_PATH . 'cart.php';
 
 session_start();
 
+$token = $_POST['csrf_token'];
+
 if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
@@ -17,10 +19,13 @@ $user = get_login_user($db);
 $cart_id = get_post('cart_id');
 $amount = get_post('amount');
 
+// 10/30更新
+if (is_valid_csrf_token($token) !== false){
 if(update_cart_amount($db, $cart_id, $amount)){
   set_message('購入数を更新しました。');
 } else {
   set_error('購入数の更新に失敗しました。');
+}
 }
 
 redirect_to(CART_URL);

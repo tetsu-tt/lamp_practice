@@ -33,7 +33,10 @@ function get_file($name){
   return array();
 }
 
-// ユーザーidが正しければ、ユーザーidを出力
+// ユーザーidが正しければ、ユーザーidを出力。
+// この関数は$nameの値がABCの時
+// $_SESSION['ABC']が存在すれば$_SESSION['ABC']を返す。
+// $_SESSION['ABC']が存在しなければ空文字を返す。
 function get_session($name){
   if(isset($_SESSION[$name]) === true){
     return $_SESSION[$name];
@@ -41,6 +44,7 @@ function get_session($name){
   return '';
 }
 
+// セッションに変数を代入する
 function set_session($name, $value){
   $_SESSION[$name] = $value;
 }
@@ -144,4 +148,31 @@ function is_valid_upload_image($image){
 // 教科書の課題で実施したもの
 function h($str){
   return htmlspecialchars($str,ENT_QUOTES,'UTF-8');
+}
+
+
+// 10/27更新
+// トークンの生成
+// 正確に言葉にする(10/27)
+function get_csrf_token(){
+  // get_random_string()はユーザー定義関数。30字のランダムな文字列を作成する。
+  $token = get_random_string(30);
+  // set_session()はユーザー定義関数。トークンのランダムな文字列を$_SESSION['csrf']に代入する
+  set_session('csrf_token', $token);
+  // トークンの出力
+  return $token;
+}
+
+
+function is_valid_csrf_token($token){
+  if($token === '') {
+    return false;
+  }
+
+  // get_session()の引数がcsrf_tokenなので
+  // $_SESSION['csrf_token']が存在すれば$_SESSION['csrf_token']を返す。
+  // $_SESSION['csrf_token']が存在しなければ空文字を返す。
+  return $token === get_session('csrf_token');
+  // 等しければtrueを返す
+  // return $token === $_SESSION['csrf_token'];
 }

@@ -5,6 +5,8 @@ require_once MODEL_PATH . 'user.php';
 
 session_start();
 
+$token = $_POST['csrf_token'];
+
 if(is_logined() === true){
   redirect_to(HOME_URL);
 }
@@ -15,10 +17,13 @@ $password_confirmation = get_post('password_confirmation');
 
 $db = get_db_connect();
 
-
+// 10/30更新
+if (is_valid_csrf_token($token) !== false){
 try{
   $result = regist_user($db, $name, $password, $password_confirmation);
   // $regist_userでsqlの発行に成功すればtrue失敗すればfalseを返す
+
+  
   if( $result=== false){
     set_error('ユーザー登録に失敗しました。');
     redirect_to(SIGNUP_URL);
@@ -30,5 +35,7 @@ try{
 }
 
 set_message('ユーザー登録が完了しました。');
+}
+
 login_as($db, $name, $password);
 redirect_to(HOME_URL);

@@ -17,4 +17,10 @@ $user = get_login_user($db);
 
 $items = get_open_items($db);
 
+// レッスン(10/27)
+// ランダムな文字列であるトークンをセッションに入れる。そして、トークンの文字列を$tokenに代入する。
+$token = get_csrf_token();
+
+
 include_once VIEW_PATH . 'index_view.php';
+

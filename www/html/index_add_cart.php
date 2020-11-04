@@ -7,6 +7,8 @@ require_once MODEL_PATH . 'cart.php';
 
 session_start();
 
+//$_SESSION['csrf_token'];
+
 if(is_logined() === false){
   redirect_to(LOGIN_URL);
 }
@@ -15,13 +17,18 @@ $db = get_db_connect();
 $user = get_login_user($db);
 
 
+
 $item_id = get_post('item_id');
 
-// $user['user_id']とは？
+$token = $_POST['csrf_token'];
+
+// 10/30更新
+if (is_valid_csrf_token($token) !== false){
 if(add_cart($db,$user['user_id'], $item_id)){
   set_message('カートに商品を追加しました。');
 } else {
   set_error('カートの更新に失敗しました。');
+}
 }
 
 redirect_to(HOME_URL);
