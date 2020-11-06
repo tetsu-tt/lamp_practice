@@ -111,10 +111,15 @@ function delete_cart($db, $cart_id){
   return execute_query($db, $sql, [$cart_id]);
 }
 
+// $dbはデータベースへの接続
+// $cartsは今回購入する商品一覧
 function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
   }
+
+  // cartの在庫数・ステータスが妥当な状態の場合の処理
+  // 購入処理(在庫を減らしてカートの中身を空にする）を行う
   foreach($carts as $cart){
     if(update_item_stock(
         $db, 
@@ -125,6 +130,9 @@ function purchase_carts($db, $carts){
     }
   }
   
+  // $carts[0]['user_id']の[0]とは何か？
+  // 最初の商品のユーザーidのこと（レッスン）
+  // $cartsは二重の配列
   delete_user_carts($db, $carts[0]['user_id']);
 }
 
