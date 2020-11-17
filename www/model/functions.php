@@ -18,6 +18,7 @@ function get_get($name){
   return '';
 }
 
+// 次回復習する(11/16実施予定)
 function get_post($name){
   if(isset($_POST[$name]) === true){
     return $_POST[$name];
@@ -175,4 +176,71 @@ function is_valid_csrf_token($token){
   return $token === get_session('csrf_token');
   // 等しければtrueを返す
   // return $token === $_SESSION['csrf_token'];
+}
+
+
+// 11/11の試み(購入履歴の取得)
+function get_purchase_history($db, $user) {
+
+        $sql = "SELECT purchase_history.order_id, purchase_date, SUM(price*amount)
+                FROM purchase_history
+                INNER JOIN purchase_details
+                ON purchase_history.order_id = purchase_details.order_id
+                WHERE purchase_history.user_id = ?
+                GROUP BY purchase_history.order_id";
+          
+        //purchase_historyのSQL文を実行する準備と実行を行う
+        return fetch_all_query($db, $sql, [$user['user_id']]);
+}
+
+
+// 11/11の試み（管理者から購入履歴を見る場合→全てのユーザーの購入履歴の取得）
+// 11/16の試み（第２引数に$userが必要か確認する）
+function purchase_history_admin($db, $user) {
+
+  $sql = "SELECT purchase_history.order_id, purchase_date, SUM(price*amount)
+          FROM purchase_history
+          INNER JOIN purchase_details
+          ON purchase_history.order_id = purchase_details.order_id
+          GROUP BY purchase_history.order_id";
+    
+  //purchase_historyのSQL文を実行する準備と実行を行う
+  // 第３引数と？を結び付ける必要がないので、３つ目の引数はいらない（レッスン）
+  return fetch_all_query($db, $sql);
+}
+
+
+//  購入明細画面のSQL文「商品名」「購入時の商品価格」 「購入数」「小計」(11/16の試み)
+function purchase_details($db, $order_id) {
+
+     $sql =  "SELECT name, price, amount, purchase_date, price*amount
+              FROM purchase_details
+              INNER JOIN purchase_history
+              ON purchase_details.order_id = purchase_history.order_id
+              WHERE purchase_history.order_id = ?";    
+     
+     //purchase_detailsのSQL文を実行する準備と実行を行う
+      return fetch_all_query($db, $sql, [$order_id]);
+
+
+}
+
+// 購入明細画面のSQL文「該当の注文の合計金額」
+function sum_details($purchase_details){
+  $total_price = 0;
+  foreach($purchase_details as $purchase_detail){
+    $total_price += $purchase_detail['price'] * $purchase_detail['amount'];
+  }
+  return $total_price;
+}
+
+// 購入明細画面のSQL文「商品名」「購入時の商品価格」 「購入数」「小計」（管理者用）(11/16の試み)
+function purchase_details_admin($db,$order_id){
+$sql =   "SELECT name, price, amount,purchase_date, price*amount
+          FROM purchase_details
+          INNER JOIN purchase_history
+          ON purchase_details.order_id = purchase_history.order_id
+          WHERE purchase_history.order_id = ?";
+//purchase_details_adminのSQL文を実行する準備と実行を行う
+return fetch_all_query($db, $sql, [$order_id]);
 }

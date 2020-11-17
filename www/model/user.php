@@ -64,6 +64,8 @@ function regist_user($db, $name, $password, $password_confirmation) {
 }
 
 // 管理者名が正しければ？？を出力
+// これを使ってやってみる（レッスン11/11）
+// returnの意味を再確認したい（11/11)
 function is_admin($user){
   return $user['type'] === USER_TYPE_ADMIN;
 }
