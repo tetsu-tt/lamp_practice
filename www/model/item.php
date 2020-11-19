@@ -221,3 +221,18 @@ function is_valid_item_status($status){
   }
   return $is_valid;
 }
+
+// 課題3-3ランキング機能（11/17の試み）
+function item_ranking($db){
+  $sql =  "SELECT purchase_details.item_id, items.name, SUM(amount)
+          FROM items
+          INNER JOIN purchase_details
+          ON items.item_id = purchase_details.item_id
+          GROUP BY item_id
+          ORDER BY SUM(amount) DESC LIMIT 3";
+
+  //item_rankingのSQL文を実行する準備と実行を行う
+  return fetch_all_query($db, $sql);
+}
+
+// 課題3-3ランキング機能（順位）

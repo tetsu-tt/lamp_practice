@@ -51,6 +51,23 @@ header('X-FRAME-OPTIONS: DENY');
       </div>
     </div>
   </div>
-  
+  <table class="table table-bordered">
+      <!-- <thead>で、テーブル（表）のヘッダ部分を定義することができる -->
+      <thead class="thead-light">
+          <tr>
+            <th>購入ランキング</th>
+            <th>商品名</th>
+          </tr>
+        </thead>
+        <tbody>
+        <!-- 11/17のレッスン -->
+        <?php foreach($item_ranking as $key => $ranking) { ?>
+          <tr>
+            <td><?php print $key + 1; ?></td>
+            <td><?php print htmlspecialchars(($ranking['name']), ENT_QUOTES, 'UTF-8'); ?></td>
+          </tr>
+        <?php } ?>
+        </tbody>
+  </table>
 </body>
 </html>
